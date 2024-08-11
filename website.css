@@ -9,7 +9,7 @@ body{
   background: url(IMG_20240810_232046_0.png) no-repeat bottom left;
   border-radius: 50px;
   height: 100vh;
-  opacity: 0.85;
+  opacity: 0.95;
   width: 100%;
 }
 .image{
@@ -55,6 +55,9 @@ body{
   cursor: pointer;
 }
 
+.sociallink{
+  border-radius: 13px;
+}
 .sociallink:hover{
   opacity: 0.5;
 }
