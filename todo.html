@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="image.png">
     <title>Todo List</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 0;
             margin: 0;
+            background-image: url('todo.png'); /* Add your background image URL here */
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -16,18 +18,6 @@
             align-items: center;
             justify-content: center;
             position: relative;
-        }
-
-        .background-image {
-            background-image: url('your-background-image-url.jpg'); /* Add your background image URL here */
-            background-size: cover;
-            background-position: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
         }
 
         .todo-container {
@@ -105,8 +95,6 @@
     </style>
 </head>
 <body>
-    <div class="background-image"></div>
-
     <div class="todo-container">
         <p>Todo List</p>
 
@@ -117,9 +105,9 @@
         </div>
 
         <div class="filter-buttons">
-            <button onclick="filterTodos('all')" class="filter-button all active">All</button>
+            <button onclick="filterTodos('all')" class="filter-button all-filter active">All</button>
             <button onclick="filterTodos('active')" class="filter-button active-filter">Active</button>
-            <button onclick="filterTodos('completed')" class="filter-button completed">Completed</button>
+            <button onclick="filterTodos('completed')" class="filter-button completed-filter">Completed</button>
         </div>
 
         <div class="js-todo-list todo-grid"></div>
@@ -128,14 +116,15 @@
     </div>
 
     <script>
-        const todoList = [];
+        let todoList = [];
+        let currentFilter = 'all';
 
-        function renderTodoList(filter = 'all') {
+        function renderTodoList() {
             let filteredTodos = todoList;
 
-            if (filter === 'active') {
+            if (currentFilter === 'active') {
                 filteredTodos = todoList.filter(todo => !todo.completed);
-            } else if (filter === 'completed') {
+            } else if (currentFilter === 'completed') {
                 filteredTodos = todoList.filter(todo => todo.completed);
             }
 
@@ -158,13 +147,6 @@
             }
 
             document.querySelector('.js-todo-list').innerHTML = todoListHTML;
-
-            // Check if all tasks are completed and show background image if true
-            if (todoList.every(todo => todo.completed)) {
-                document.querySelector('.background-image').style.display = 'block';
-            } else {
-                document.querySelector('.background-image').style.display = 'none';
-            }
         }
 
         function addTodo() {
@@ -190,20 +172,17 @@
         }
 
         function clearCompleted() {
-            for (let i = todoList.length - 1; i >= 0; i--) {
-                if (todoList[i].completed) {
-                    todoList.splice(i, 1);
-                }
-            }
+            todoList = todoList.filter(todo => !todo.completed);
             renderTodoList();
         }
 
         function filterTodos(filter) {
+            currentFilter = filter;
             document.querySelectorAll('.filter-button').forEach(button => {
                 button.classList.remove('active');
             });
-            document.querySelector(`.filter-button.${filter}`).classList.add('active');
-            renderTodoList(filter);
+            document.querySelector(`.filter-button.${filter}-filter`).classList.add('active');
+            renderTodoList();
         }
 
         renderTodoList();
