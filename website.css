@@ -99,6 +99,14 @@ a{
   row-gap: 15px;
   text-align: center;
 }
+
+.modify-buttons-login_page{
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  /* row-gap: 15px; */
+  text-align: center;
+}
 .Acadamics-button,.Projects-button,.Interests-button{
   border: none;
   font-size: 30px;
