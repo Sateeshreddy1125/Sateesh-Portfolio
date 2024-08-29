@@ -7,13 +7,44 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .background-image {
+            background-image: url('your-background-image-url.jpg'); /* Add your background image URL here */
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .todo-container {
+            background-color: #ffffff;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Adjust as needed */
+            text-align: center;
         }
 
         .todo-grid,
         .todo-input-grid {
             display: grid;
             grid-template-columns: 200px 150px 100px;
+            justify-content: space-evenly;
             column-gap: 10px;
             row-gap: 10px;
             align-items: center;
@@ -74,23 +105,27 @@
     </style>
 </head>
 <body>
-    <p>Todo List</p>
+    <div class="background-image"></div>
 
-    <div class="todo-input-grid">
-        <input placeholder="Todo name" class="js-name-input name-input">
-        <input type="date" class="js-due-date-input due-date-input">
-        <button onclick="addTodo()" class="add-todo-button">Add</button>
+    <div class="todo-container">
+        <p>Todo List</p>
+
+        <div class="todo-input-grid">
+            <input placeholder="Todo name" class="js-name-input name-input">
+            <input type="date" class="js-due-date-input due-date-input">
+            <button onclick="addTodo()" class="add-todo-button">Add</button>
+        </div>
+
+        <div class="filter-buttons">
+            <button onclick="filterTodos('all')" class="filter-button all active">All</button>
+            <button onclick="filterTodos('active')" class="filter-button active-filter">Active</button>
+            <button onclick="filterTodos('completed')" class="filter-button completed">Completed</button>
+        </div>
+
+        <div class="js-todo-list todo-grid"></div>
+
+        <button onclick="clearCompleted()" class="clear-completed-button">Clear Completed Tasks</button>
     </div>
-
-    <div class="filter-buttons">
-        <button onclick="filterTodos('all')" class="filter-button all active">All</button>
-        <button onclick="filterTodos('active')" class="filter-button active-filter">Active</button>
-        <button onclick="filterTodos('completed')" class="filter-button completed">Completed</button>
-    </div>
-
-    <div class="js-todo-list todo-grid"></div>
-
-    <button onclick="clearCompleted()" class="clear-completed-button">Clear Completed Tasks</button>
 
     <script>
         const todoList = [];
@@ -123,6 +158,13 @@
             }
 
             document.querySelector('.js-todo-list').innerHTML = todoListHTML;
+
+            // Check if all tasks are completed and show background image if true
+            if (todoList.every(todo => todo.completed)) {
+                document.querySelector('.background-image').style.display = 'block';
+            } else {
+                document.querySelector('.background-image').style.display = 'none';
+            }
         }
 
         function addTodo() {
