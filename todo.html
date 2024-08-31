@@ -28,6 +28,7 @@
             width: 100%;
             max-width: 600px; /* Adjust as needed */
             text-align: center;
+            z-index: 1;
         }
 
         .todo-grid,
@@ -92,10 +93,25 @@
         .filter-button.active {
             background-color: #2980b9;
         }
+
+        .full-screen-image {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 2;
+        }
+
+        .full-screen-image.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div class="todo-container">
+    <div class="todo-container js-todo-container">
         <p>Todo List</p>
 
         <div class="todo-input-grid">
@@ -114,6 +130,8 @@
 
         <button onclick="clearCompleted()" class="clear-completed-button">Clear Completed Tasks</button>
     </div>
+
+    <img src="completed3.png" alt="All tasks completed!" class="full-screen-image js-full-screen-image">
 
     <script>
         let todoList = [];
@@ -146,7 +164,21 @@
                 todoListHTML += html;
             }
 
-            document.querySelector('.js-todo-list').innerHTML = todoListHTML;
+            const todoListContainer = document.querySelector('.js-todo-list');
+            todoListContainer.innerHTML = todoListHTML;
+
+            // Display full-screen image if all tasks are completed
+            const fullScreenImage = document.querySelector('.js-full-screen-image');
+            const todoContainer = document.querySelector('.js-todo-container');
+            const allCompleted = todoList.length > 0 && todoList.every(todo => todo.completed);
+
+            if (allCompleted) {
+                fullScreenImage.classList.add('active');
+                todoContainer.style.display = 'none';
+            } else {
+                fullScreenImage.classList.remove('active');
+                todoContainer.style.display = 'block';
+            }
         }
 
         function addTodo() {
