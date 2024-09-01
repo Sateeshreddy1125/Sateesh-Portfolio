@@ -10,7 +10,6 @@
             font-family: Arial, sans-serif;
             padding: 0;
             margin: 0;
-            background-image: url('todo.png'); /* Add your background image URL here */
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -131,8 +130,6 @@
         <button onclick="clearCompleted()" class="clear-completed-button">Clear Completed Tasks</button>
     </div>
 
-    <img src="completed3.png" alt="All tasks completed!" class="full-screen-image js-full-screen-image">
-
     <script>
         let todoList = [];
         let currentFilter = 'all';
@@ -167,17 +164,12 @@
             const todoListContainer = document.querySelector('.js-todo-list');
             todoListContainer.innerHTML = todoListHTML;
 
-            // Display full-screen image if all tasks are completed
-            const fullScreenImage = document.querySelector('.js-full-screen-image');
-            const todoContainer = document.querySelector('.js-todo-container');
+            // Display appropriate background image based on task completion
             const allCompleted = todoList.length > 0 && todoList.every(todo => todo.completed);
-
             if (allCompleted) {
-                fullScreenImage.classList.add('active');
-                todoContainer.style.display = 'none';
+                document.body.style.backgroundImage = "url('completed3.png')";
             } else {
-                fullScreenImage.classList.remove('active');
-                todoContainer.style.display = 'block';
+                document.body.style.backgroundImage = "url('todo.png')";
             }
         }
 
